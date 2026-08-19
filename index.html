@@ -325,9 +325,15 @@
         <span class="sponsor-badge">Pirelli</span>
         <span class="sponsor-badge">Repco</span>
       </div>
-    </header>
+        </header>
 
-        <!-- Countdown Timer -->
+        <!-- Photo Section -->
+    <div style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center;">
+      <img src="IMG-20260213-WA0001(1).jpg" alt="Bathurst 12 Hour Photo 1" style="width: 48%; border-radius: 8px; border: 1px solid var(--border-color);">
+      <img src="IMG-20240601-WA0004.jpg" alt="Bathurst 12 Hour Photo 2" style="width: 48%; border-radius: 8px; border: 1px solid var(--border-color);">
+    </div>
+
+    <!-- Countdown Timer -->
     <div class="countdown-container">
       <div class="countdown-title">Next Race: 2027 Bathurst 12 Hour Countdown</div>
       <div id="timer" class="timer-display">
@@ -353,7 +359,9 @@
 
     <!-- Year Filter Bar -->
 
-    <div class="year-nav">
+        <div class="year-nav">
+      <button class="year-btn" onclick="selectYear('2026')">2026</button>
+      <button class="year-btn" onclick="selectYear('2025')">2025</button>
       <button class="year-btn active" onclick="selectYear('2024')">2024</button>
       <button class="year-btn" onclick="selectYear('2023')">2023</button>
       <button class="year-btn" onclick="selectYear('2022')">2022</button>
@@ -405,8 +413,34 @@
   </div>
 
   <script>
-    // Historical Race Data
+        // Historical Race Data
     const raceData = {
+      "2026": {
+        results: [
+          { pos: "1", car: "888", team: "Mercedes-AMG Team GMR", drivers: "M. Engel, M. Grenier, M. Martin", laps: "310", gap: "Winner" }
+        ],
+        entries: [
+          { car: "888", class: "Pro", vehicle: "Mercedes-AMG GT3", team: "Mercedes-AMG Team GMR" }
+        ],
+        stats: {
+          pole: "1:25.800 (Official)",
+          fastestLap: "2:02.100 (Official)",
+          topSpeed: "301.2 km/h"
+        }
+      },
+      "2025": {
+        results: [
+          { pos: "1", car: "32", team: "Team WRT", drivers: "K. van der Linde, S. van der Linde, A. Farfus", laps: "315", gap: "Winner" }
+        ],
+        entries: [
+          { car: "32", class: "Pro", vehicle: "BMW M4 GT3", team: "Team WRT" }
+        ],
+        stats: {
+          pole: "1:26.100 (Official)",
+          fastestLap: "2:02.500 (Official)",
+          topSpeed: "299.8 km/h"
+        }
+      },
       "2024": {
         results: [
           { pos: "1", car: "75", team: "SunEnergy1 Racing", drivers: "J. Gounon, L. Stolz, K. Habul", laps: "275", gap: "Winner" },
