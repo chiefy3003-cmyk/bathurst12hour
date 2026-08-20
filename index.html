@@ -4,9 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bathurst 12 Hour Hub</title>
-  <style>
+    <style>
     body { background: #0f1115; color: #f1f1f1; font-family: sans-serif; padding: 20px; text-align: center; }
-    header { background: #181b20; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+    header { background: #181b20; padding: 30px; border-radius: 8px; margin-bottom: 20px; border-bottom: 3px solid #ffb703; }
+    
+    /* Dull Yellow / Gold Title */
+    h1 { 
+      color: #ffb703; 
+      font-size: 3.5rem; 
+      text-transform: uppercase; 
+      margin: 0; 
+      letter-spacing: 2px; 
+    }
+    
+    .subtitle { color: #9aa0a6; margin-top: 10px; font-size: 1.1rem; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 20px; }
     img { width: 100%; border-radius: 8px; border: 1px solid #2a2e35; }
   </style>
@@ -15,7 +26,7 @@
 
   <header>
     <h1>Bathurst 12 Hour 2027</h1>
-    <p>Distance from Frankston (3199): ~980km</p>
+    <p class="subtitle">Distance from Frankston (3199): ~980km</p>
   </header>
 
   <div class="gallery">
