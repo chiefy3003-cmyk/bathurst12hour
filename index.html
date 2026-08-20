@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -569,4 +570,598 @@
   </script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bathurst 12 Hour Trip Hub</title>
+  <style>
+    :root {
+      --bg-dark: #0f1115;
+      --card-bg: #181b20;
+      --accent-red: #e10600;
+      --accent-gold: #ffb703;
+      --text-main: #f1f1f1;
+      --text-muted: #9aa0a6;
+      --border-color: #2a2e35;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+        /* Header & Hero */
+    header {
+      background: linear-gradient(135deg, #1c0202 0%, var(--card-bg) 100%);
+      border-left: 5px solid var(--accent-red);
+      padding: 25px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #fff;
+      margin: 0;
+    }
+
+    .official-logo {
+      height: 70px;
+      width: auto;
+    }
+
+
+    .subtitle {
+
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    .hero-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .hero-info span {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Sponsor Bar */
+    .sponsors {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .sponsor-badge {
+      background: #22262d;
+      padding: 4px 10px;
+      border-radius: 3px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* Year Navigation */
+    .year-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .year-btn {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 10px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .year-btn:hover {
+      border-color: var(--accent-red);
+    }
+
+    .year-btn.active {
+      background: var(--accent-red);
+      color: #fff;
+      border-color: var(--accent-red);
+    }
+
+    /* Tabs Section */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-gold);
+      border-bottom-color: var(--accent-gold);
+    }
+
+    /* Content Display */
+    .tab-content {
+      display: none;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: #20242b;
+      color: var(--accent-gold);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .stat-card {
+      background: #20242b;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border-left: 3px solid var(--accent-gold);
+    }
+
+    .stat-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+        .stat-value {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      margin-top: 5px;
+    }
+
+    /* Countdown Styles */
+    .countdown-container {
+      background: linear-gradient(90deg, #181b20 0%, #20242b 100%);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-gold);
+    }
+
+    .countdown-title {
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .timer-display {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .timer-segment {
+      min-width: 80px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .timer-segment span {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      display: block;
+      line-height: 1;
+    }
+
+    .timer-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 8px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      .timer-display {
+        gap: 10px;
+      }
+      .timer-segment {
+        min-width: 65px;
+        padding: 8px;
+      }
+      .timer-segment span {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+        <!-- Main Header -->
+        <header>
+          <div class="header-top">
+            <img src="https://www.bathurst12hour.com.au/wp-content/themes/b12h-theme/assets/images/logo-2026.png" alt="Bathurst 12 Hour" class="official-logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Bathurst_12_Hour_logo.svg/1200px-Bathurst_12_Hour_logo.svg.png';">
+            <h1>Bathurst 12 Hour 2027</h1>
+          </div>
+          <div class="subtitle">Annual Trip & Race Historical Stats</div>
+
+
+      
+      <div class="hero-info">
+        <span>📍 Mount Panorama, Bathurst, NSW</span>
+        <span>⏱️ Green Flag: 5:45 AM (Pre-Dawn)</span>
+        <span>🏎️ Category: GT3 / Intercontinental GT Challenge</span>
+      </div>
+
+            <div class="sponsors">
+        <span>Event Partners:</span>
+        <span class="sponsor-badge">Meguiar's</span>
+        <span class="sponsor-badge">IGTC</span>
+        <span class="sponsor-badge">Pirelli</span>
+        <span class="sponsor-badge">Repco</span>
+      </div>
+        </header>
+
+        <!-- Photo Section -->
+    <div style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center;">
+      <img src="IMG-20260213-WA0001(1).jpg" alt="Bathurst 12 Hour Photo 1" style="width: 48%; border-radius: 8px; border: 1px solid var(--border-color);">
+      <img src="IMG-20240601-WA0004.jpg" alt="Bathurst 12 Hour Photo 2" style="width: 48%; border-radius: 8px; border: 1px solid var(--border-color);">
+    </div>
+
+    <!-- Countdown Timer -->
+    <div class="countdown-container">
+      <div class="countdown-title">Next Race: 2027 Bathurst 12 Hour Countdown</div>
+      <div id="timer" class="timer-display">
+
+        <div class="timer-segment">
+          <span id="days">00</span>
+          <div class="timer-label">Days</div>
+        </div>
+        <div class="timer-segment">
+          <span id="hours">00</span>
+          <div class="timer-label">Hours</div>
+        </div>
+        <div class="timer-segment">
+          <span id="minutes">00</span>
+          <div class="timer-label">Mins</div>
+        </div>
+        <div class="timer-segment">
+          <span id="seconds">00</span>
+          <div class="timer-label">Secs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Year Filter Bar -->
+
+        <div class="year-nav">
+      <button class="year-btn" onclick="selectYear('2026')">2026</button>
+      <button class="year-btn" onclick="selectYear('2025')">2025</button>
+      <button class="year-btn active" onclick="selectYear('2024')">2024</button>
+      <button class="year-btn" onclick="selectYear('2023')">2023</button>
+      <button class="year-btn" onclick="selectYear('2022')">2022</button>
+    </div>
+
+    <!-- Data Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('results')">Race Results</button>
+      <button class="tab-btn" onclick="switchTab('entries')">Entry List</button>
+      <button class="tab-btn" onclick="switchTab('stats')">Fastest Laps & Stats</button>
+    </div>
+
+    <!-- Tab 1: Race Results -->
+    <div id="results" class="tab-content active">
+      <table id="results-table">
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th>Car #</th>
+            <th>Team</th>
+            <th>Drivers</th>
+            <th>Laps</th>
+            <th>Gap</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Tab 2: Entry List -->
+    <div id="entries" class="tab-content">
+      <table id="entries-table">
+        <thead>
+          <tr>
+            <th>Car #</th>
+            <th>Class</th>
+            <th>Vehicle</th>
+            <th>Team</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Tab 3: Stats -->
+    <div id="stats" class="tab-content">
+      <div id="stats-container"></div>
+    </div>
+  </div>
+
+  <script>
+        // Historical Race Data
+    const raceData = {
+      "2026": {
+        results: [
+          { pos: "1", car: "888", team: "Mercedes-AMG Team GMR", drivers: "M. Engel, M. Grenier, M. Martin", laps: "310", gap: "Winner" }
+        ],
+        entries: [
+          { car: "888", class: "Pro", vehicle: "Mercedes-AMG GT3", team: "Mercedes-AMG Team GMR" }
+        ],
+        stats: {
+          pole: "1:25.800 (Official)",
+          fastestLap: "2:02.100 (Official)",
+          topSpeed: "301.2 km/h"
+        }
+      },
+      "2025": {
+        results: [
+          { pos: "1", car: "32", team: "Team WRT", drivers: "K. van der Linde, S. van der Linde, A. Farfus", laps: "315", gap: "Winner" }
+        ],
+        entries: [
+          { car: "32", class: "Pro", vehicle: "BMW M4 GT3", team: "Team WRT" }
+        ],
+        stats: {
+          pole: "1:26.100 (Official)",
+          fastestLap: "2:02.500 (Official)",
+          topSpeed: "299.8 km/h"
+        }
+      },
+      "2024": {
+        results: [
+          { pos: "1", car: "75", team: "SunEnergy1 Racing", drivers: "J. Gounon, L. Stolz, K. Habul", laps: "275", gap: "Winner" },
+          { pos: "2", car: "912", team: "Manthey EMA", drivers: "M. Campbell, L. Vanthoor, A. Guven", laps: "275", gap: "+2.633s" },
+          { pos: "3", car: "32", team: "Team WRT", drivers: "S. van der Linde, D. Vanthoor, C. Weerts", laps: "275", gap: "+3.779s" }
+        ],
+        entries: [
+          { car: "75", class: "Pro", vehicle: "Mercedes-AMG GT3 Evo", team: "SunEnergy1 Racing" },
+          { car: "912", class: "Pro", vehicle: "Porsche 911 GT3 R (992)", team: "Manthey EMA" },
+          { car: "46", class: "Pro", vehicle: "BMW M4 GT3", team: "Team WRT (Valentino Rossi)" },
+          { car: "888", class: "Pro-Am", vehicle: "Mercedes-AMG GT3 Evo", team: "Triple Eight J breach" }
+        ],
+        stats: {
+          pole: "1:26.272 (Sheldon van der Linde - BMW M4 GT3)",
+          fastestLap: "2:02.189 (Porsche 911 GT3 R)",
+          topSpeed: "298.3 km/h (Conrod Straight)"
+        }
+      },
+      "2023": {
+        results: [
+          { pos: "1", car: "75", team: "SunEnergy1 Racing", drivers: "J. Gounon, L. Stolz, K. Habul", laps: "323", gap: "Winner" },
+          { pos: "2", car: "912", team: "Manthey EMA", drivers: "M. Campbell, M. Jaminet, T. Preining", laps: "323", gap: "+0.926s" },
+          { pos: "3", car: "999", team: "GruppeM Racing", drivers: "R. Marciello, M. Engel, M. Grenier", laps: "323", gap: "+1.417s" }
+        ],
+        entries: [
+          { car: "75", class: "Pro", vehicle: "Mercedes-AMG GT3", team: "SunEnergy1" },
+          { car: "999", class: "Pro", vehicle: "Mercedes-AMG GT3", team: "GruppeM Racing" },
+          { car: "32", class: "Pro", vehicle: "BMW M4 GT3", team: "Team WRT" }
+        ],
+        stats: {
+          pole: "1:25.692 (Maro Engel - Mercedes-AMG GT3)",
+          fastestLap: "2:01.981 (Maro Engel)",
+          topSpeed: "300.1 km/h (Conrod Straight)"
+        }
+      },
+      "2022": {
+        results: [
+          { pos: "1", car: "75", team: "SunEnergy1 Racing", drivers: "J. Gounon, K. Habul, L. Stolz, M. Martin", laps: "291", gap: "Winner" },
+          { pos: "2", car: "91", team: "Craft-Bamboo Racing", drivers: "M. Engel, D. Juncadella, K. Tse", laps: "291", gap: "+12.001s" },
+          { pos: "3", car: "888", team: "Triple Eight Race Engineering", drivers: "S. van Gisbergen, B. Feeney, J. Ibrahim", laps: "291", gap: "+1:35.817" }
+        ],
+        entries: [
+          { car: "75", class: "Pro-Am", vehicle: "Mercedes-AMG GT3", team: "SunEnergy1" },
+          { car: "888", class: "Pro-Am", vehicle: "Mercedes-AMG GT3", team: "Triple Eight" }
+        ],
+        stats: {
+          pole: "2:02.978 (Chaz Mostert - Audi R8 LMS)",
+          fastestLap: "2:03.312",
+          topSpeed: "295.5 km/h (Conrod Straight)"
+        }
+      }
+    };
+
+    let currentYear = "2024";
+
+    function renderData() {
+      const yearData = raceData[currentYear];
+
+      // Render Results Table
+      const resultsBody = document.querySelector("#results-table tbody");
+      resultsBody.innerHTML = yearData.results.map(row => `
+        <tr>
+          <td><strong>${row.pos}</strong></td>
+          <td>#${row.car}</td>
+          <td>${row.team}</td>
+          <td>${row.drivers}</td>
+          <td>${row.laps}</td>
+          <td>${row.gap}</td>
+        </tr>
+      `).join('');
+
+      // Render Entries Table
+      const entriesBody = document.querySelector("#entries-table tbody");
+      entriesBody.innerHTML = yearData.entries.map(row => `
+        <tr>
+          <td><strong>#${row.car}</strong></td>
+          <td>${row.class}</td>
+          <td>${row.vehicle}</td>
+          <td>${row.team}</td>
+        </tr>
+      `).join('');
+
+      // Render Stats
+      const statsContainer = document.getElementById("stats-container");
+      statsContainer.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-title">Pole Position Lap</div>
+          <div class="stat-value">${yearData.stats.pole}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Fastest Race Lap</div>
+          <div class="stat-value">${yearData.stats.fastestLap}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Top Trap Speed</div>
+          <div class="stat-value">${yearData.stats.topSpeed}</div>
+        </div>
+      `;
+    }
+
+    function selectYear(year) {
+      currentYear = year;
+      document.querySelectorAll('.year-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText === year);
+      });
+      renderData();
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+        // Initial Load
+    renderData();
+
+        // Countdown Logic
+    function updateCountdown() {
+      // Set the date for the 2027 Bathurst 12 Hour (Estimated Sunday, Feb 7, 2027 at 5:45 AM AEDT)
+      const raceDate = new Date("2027-02-07T05:45:00+11:00").getTime();
+      const now = new Date().getTime();
+
+      const distance = raceDate - now;
+
+      if (distance < 0) {
+        document.querySelector(".countdown-title").innerText = "Race is Underway!";
+        document.getElementById("timer").style.display = "none";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerText = days.toString().padStart(2, '0');
+      document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+      document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+      document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+
+</body>
+>>>>>>> 589da931e4ca6df8f581f7a26a8440e300bb17cc
 </html>
