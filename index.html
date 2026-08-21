@@ -34,17 +34,48 @@
     <p class="subtitle">Distance from Frankston (3199): ~980km</p>
   </header>
 
-  <!-- Countdown Timer -->
-  <div id="countdown" style="background: #181b20; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #2a2e35;">
-    <div id="timer" style="font-size: 1.5rem; font-weight: bold;">Loading...</div>
+    <!-- Countdown Timer -->
+  <div class="countdown-container" style="background: #181b20; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 1px solid #2a2e35;">
+    <div style="color: #ffb703; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: bold;">Next Race Countdown</div>
+    <div id="timer" style="display: flex; justify-content: center; gap: 20px; font-size: 1.5rem; font-weight: 800; color: #fff;">
+      <div><span id="days">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">DAYS</div></div>
+      <div><span id="hours">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">HOURS</div></div>
+      <div><span id="minutes">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">MINS</div></div>
+      <div><span id="seconds">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">SECS</div></div>
+    </div>
   </div>
 
-  <div class="gallery">
+    <div class="gallery">
     <img src="IMG-20260213-WA0001(1).jpg" alt="Photo 1">
     <img src="IMG-20240601-WA0004.jpg" alt="Photo 2">
     <img src="IMG-20260215-WA0007.jpg" alt="Photo 3">
     <img src="IMG-20260214-WA0005.jpg" alt="Photo 4">
   </div>
 
+    <script>
+    function updateCountdown() {
+      const raceDate = new Date("2027-02-07T05:45:00+11:00").getTime();
+      const now = new Date().getTime();
+      const distance = raceDate - now;
+
+      if (distance < 0) {
+        document.getElementById("timer").innerHTML = "Race Underway!";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerText = days.toString().padStart(2, '0');
+      document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+      document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+      document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+    }
+    
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
 </body>
 </html>
