@@ -4,22 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bathurst 12 Hour Hub</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.min.css">
+  <!-- LightGallery CSS for arrows and X button -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery-bundle.min.css">
   <style>
     body { background: #0f1115; color: #f1f1f1; font-family: sans-serif; padding: 20px; text-align: center; }
     header { background: #181b20; padding: 30px; border-radius: 8px; margin-bottom: 20px; border-bottom: 3px solid #ffb703; }
     h1 { color: #ffb703; font-size: 5.25rem; text-transform: uppercase; margin: 0; letter-spacing: 2px; }
     .subtitle { color: #9aa0a6; margin-top: 10px; font-size: 1.1rem; }
+    
     .campsite-btn { color: #39ff14; border: 1px solid #39ff14; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin: 0 10px; display: inline-block; cursor: pointer; background: transparent; font-size: 1rem; }
     .campsite-btn:hover { background: rgba(57, 255, 20, 0.2); }
+    
     .year-nav { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
     .year-btn { background: #181b20; color: #f1f1f1; border: 1px solid #39ff14; padding: 10px 20px; cursor: pointer; border-radius: 5px; transition: 0.3s; }
     .year-btn:hover { background: #39ff14; color: #0f1115; }
     .year-btn.active { background: #39ff14; color: #0f1115; font-weight: bold; border-color: #39ff14; }
+
     .data-card { background: #181b20; padding: 20px; border-radius: 8px; margin: 20px auto; border: 1px solid #2a2e35; max-width: 600px; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
     .gallery a img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; border: 1px solid #2a2e35; cursor: pointer; }
-    @media (max-width: 600px) { h1 { font-size: 2.5rem !important; } .gallery { grid-template-columns: 1fr !important; } }
+    
+    @media (max-width: 600px) {
+      h1 { font-size: 2.5rem !important; }
+      .gallery { grid-template-columns: 1fr !important; }
+    }
   </style>
 </head>
 <body>
@@ -56,27 +64,19 @@
 
   <button onclick="toggleGallery()" class="campsite-btn" style="margin-top: 30px;">View Photo Gallery</button>
 
-  <div id="gallerySection" class="gallery" style="display: none;" id="my-gallery">
-    <a href="IMG-20260213-WA0001(1).jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20260213-WA0001(1).jpg" alt="Photo 1"></a>
-    <a href="IMG-20240601-WA0004.jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20240601-WA0004.jpg" alt="Photo 2"></a>
-    <a href="IMG-20260215-WA0007.jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20260215-WA0007.jpg" alt="Photo 3"></a>
-    <a href="IMG-20260214-WA0005.jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20260214-WA0005.jpg" alt="Photo 4"></a>
-    <a href="timthumb.jpg" data-pswp-width="1200" data-pswp-height="800"><img src="timthumb.jpg" alt="Photo 5"></a>
-    <a href="timthumb (3).jpg" data-pswp-width="1200" data-pswp-height="800"><img src="timthumb (3).jpg" alt="Photo 6"></a>
-    <a href="timthumb (2).jpg" data-pswp-width="1200" data-pswp-height="800"><img src="timthumb (2).jpg" alt="Photo 7"></a>
+  <div id="gallerySection" class="gallery" style="display: none;">
+    <a href="IMG-20260213-WA0001(1).jpg"><img src="IMG-20260213-WA0001(1).jpg" alt="Photo 1"></a>
+    <a href="IMG-20240601-WA0004.jpg"><img src="IMG-20240601-WA0004.jpg" alt="Photo 2"></a>
+    <a href="IMG-20260215-WA0007.jpg"><img src="IMG-20260215-WA0007.jpg" alt="Photo 3"></a>
+    <a href="IMG-20260214-WA0005.jpg"><img src="IMG-20260214-WA0005.jpg" alt="Photo 4"></a>
+    <a href="timthumb.jpg"><img src="timthumb.jpg" alt="Photo 5"></a>
+    <a href="timthumb (3).jpg"><img src="timthumb (3).jpg" alt="Photo 6"></a>
+    <a href="timthumb (2).jpg"><img src="timthumb (2).jpg" alt="Photo 7"></a>
   </div>
 
-  <script type="module">
-    import PhotoSwipeLightbox from 'https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe-lightbox.esm.min.js';
-    const lightbox = new PhotoSwipeLightbox({ 
-      gallery: '#my-gallery', 
-      children: 'a', 
-      pswpModule: () => import('https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.esm.min.js') 
-    });
-    lightbox.init();
-  </script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/lightgallery.min.js"></script>
   <script>
+    lightGallery(document.getElementById('gallerySection'), { selector: 'a' });
     function toggleGallery() { var x = document.getElementById("gallerySection"); x.style.display = (x.style.display === "none") ? "grid" : "none"; }
     function selectYear(year, btn) {
       document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
