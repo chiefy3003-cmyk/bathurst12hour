@@ -10,15 +10,24 @@
     header { background: #181b20; padding: 30px; border-radius: 8px; margin-bottom: 20px; border-bottom: 3px solid #ffb703; }
     h1 { color: #ffb703; font-size: 5.25rem; text-transform: uppercase; margin: 0; letter-spacing: 2px; }
     .subtitle { color: #9aa0a6; margin-top: 10px; font-size: 1.1rem; }
+    
     .campsite-btn { color: #39ff14; border: 1px solid #39ff14; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin: 0 10px; display: inline-block; cursor: pointer; background: transparent; font-size: 1rem; }
     .campsite-btn:hover { background: rgba(57, 255, 20, 0.2); }
+    
     .year-nav { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-    .year-btn { background: #181b20; color: #f1f1f1; border: 1px solid #2a2e35; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
-    .year-btn.active { background: #ffb703; color: #0f1115; font-weight: bold; }
+    .year-btn { background: #181b20; color: #f1f1f1; border: 1px solid #39ff14; padding: 10px 20px; cursor: pointer; border-radius: 5px; transition: 0.3s; }
+    .year-btn:hover { background: #39ff14; color: #0f1115; }
+    .year-btn.active { background: #39ff14; color: #0f1115; font-weight: bold; border-color: #39ff14; }
+
     .data-card { background: #181b20; padding: 20px; border-radius: 8px; margin: 20px auto; border: 1px solid #2a2e35; max-width: 600px; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
     .gallery a img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; border: 1px solid #2a2e35; cursor: pointer; }
-    @media (max-width: 600px) { h1 { font-size: 2.5rem !important; } .gallery { grid-template-columns: 1fr !important; } }
+    
+    @media (max-width: 600px) {
+      h1 { font-size: 2.5rem !important; }
+      .gallery { grid-template-columns: 1fr !important; }
+      .subtitle span, .subtitle a { display: block; margin: 5px 0; }
+    }
   </style>
 </head>
 <body>
@@ -45,17 +54,17 @@
   </div>
 
   <div class="year-nav">
-    <button class="year-btn" onclick="selectYear('2026')">2026</button>
-    <button class="year-btn" onclick="selectYear('2025')">2025</button>
-    <button class="year-btn" onclick="selectYear('2024')">2024</button>
-    <button class="year-btn" onclick="selectYear('2023')">2023</button>
-    <button class="year-btn" onclick="selectYear('2022')">2022</button>
+    <button class="year-btn" onclick="selectYear('2026', this)">2026</button>
+    <button class="year-btn" onclick="selectYear('2025', this)">2025</button>
+    <button class="year-btn" onclick="selectYear('2024', this)">2024</button>
+    <button class="year-btn" onclick="selectYear('2023', this)">2023</button>
+    <button class="year-btn" onclick="selectYear('2022', this)">2022</button>
   </div>
   <div id="resultsDisplay" class="data-card">Select a year to see results.</div>
 
   <button onclick="toggleGallery()" class="campsite-btn" style="margin-top: 30px;">View Photo Gallery</button>
 
-  <div id="gallerySection" class="gallery" style="display: none;">
+  <div id="gallerySection" class="gallery" style="display: none;" id="my-gallery">
     <a href="IMG-20260213-WA0001(1).jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20260213-WA0001(1).jpg" alt="Photo 1"></a>
     <a href="IMG-20240601-WA0004.jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20240601-WA0004.jpg" alt="Photo 2"></a>
     <a href="IMG-20260215-WA0007.jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20260215-WA0007.jpg" alt="Photo 3"></a>
@@ -67,9 +76,12 @@
     const lightbox = new PhotoSwipeLightbox({ gallery: '#my-gallery', children: 'a', pswpModule: () => import('https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.esm.min.js') });
     lightbox.init();
   </script>
+
   <script>
     function toggleGallery() { var x = document.getElementById("gallerySection"); x.style.display = (x.style.display === "none") ? "grid" : "none"; }
-    function selectYear(year) {
+    function selectYear(year, btn) {
+      document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       const raceData = {
         "2026": { results: "Winner: #888 Mercedes-AMG (Engel/Grenier/Martin)", pole: "1:25.800", fastLap: "2:02.100" },
         "2025": { results: "Winner: #32 Team WRT BMW (K.vdLinde/S.vdLinde/Farfus)", pole: "1:26.100", fastLap: "2:02.500" },
@@ -84,6 +96,7 @@
       const raceDate = new Date("2027-02-14T05:45:00+11:00").getTime();
       const now = new Date().getTime();
       const distance = raceDate - now;
+      if (distance < 0) { document.querySelector(".countdown-container").innerHTML = "Race Underway!"; return; }
       document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
       document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
       document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
