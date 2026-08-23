@@ -53,7 +53,9 @@
   </div>
   <div id="resultsDisplay" class="data-card">Select a year to see results.</div>
 
-  <div class="gallery" id="my-gallery">
+  <button onclick="toggleGallery()" class="campsite-btn" style="margin-top: 30px;">View Photo Gallery</button>
+
+  <div id="gallerySection" class="gallery" style="display: none;">
     <a href="IMG-20260213-WA0001(1).jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20260213-WA0001(1).jpg" alt="Photo 1"></a>
     <a href="IMG-20240601-WA0004.jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20240601-WA0004.jpg" alt="Photo 2"></a>
     <a href="IMG-20260215-WA0007.jpg" data-pswp-width="1200" data-pswp-height="800"><img src="IMG-20260215-WA0007.jpg" alt="Photo 3"></a>
@@ -64,15 +66,17 @@
     import PhotoSwipeLightbox from 'https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe-lightbox.esm.min.js';
     const lightbox = new PhotoSwipeLightbox({ gallery: '#my-gallery', children: 'a', pswpModule: () => import('https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.esm.min.js') });
     lightbox.init();
-
-    const raceData = {
-      "2026": { results: "Winner: #888 Mercedes-AMG (Engel/Grenier/Martin)", pole: "1:25.800", fastLap: "2:02.100" },
-      "2025": { results: "Winner: #32 Team WRT BMW (K.vdLinde/S.vdLinde/Farfus)", pole: "1:26.100", fastLap: "2:02.500" },
-      "2024": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Stolz/Habul)", pole: "1:26.272", fastLap: "2:02.189" },
-      "2023": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Stolz/Habul)", pole: "1:25.692", fastLap: "2:01.981" },
-      "2022": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Habul/Stolz/Martin)", pole: "2:02.978", fastLap: "2:03.312" }
-    };
+  </script>
+  <script>
+    function toggleGallery() { var x = document.getElementById("gallerySection"); x.style.display = (x.style.display === "none") ? "grid" : "none"; }
     function selectYear(year) {
+      const raceData = {
+        "2026": { results: "Winner: #888 Mercedes-AMG (Engel/Grenier/Martin)", pole: "1:25.800", fastLap: "2:02.100" },
+        "2025": { results: "Winner: #32 Team WRT BMW (K.vdLinde/S.vdLinde/Farfus)", pole: "1:26.100", fastLap: "2:02.500" },
+        "2024": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Stolz/Habul)", pole: "1:26.272", fastLap: "2:02.189" },
+        "2023": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Stolz/Habul)", pole: "1:25.692", fastLap: "2:01.981" },
+        "2022": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Habul/Stolz/Martin)", pole: "2:02.978", fastLap: "2:03.312" }
+      };
       const data = raceData[year];
       document.getElementById('resultsDisplay').innerHTML = `<h3>${year} Results</h3><p>${data.results}</p><p>Pole: ${data.pole}</p><p>Fastest Lap: ${data.fastLap}</p>`;
     }
