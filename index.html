@@ -11,11 +11,14 @@
     header { background: #181b20; padding: 30px; border-radius: 8px; margin-bottom: 20px; border-bottom: 3px solid #ffb703; }
     h1 { color: #ffb703; font-size: 5.25rem; text-transform: uppercase; margin: 0; letter-spacing: 2px; }
     .subtitle { color: #9aa0a6; margin-top: 10px; font-size: 1.1rem; }
+    
     .campsite-btn { color: #39ff14; border: 1px solid #39ff14; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin: 0 10px; display: inline-block; cursor: pointer; background: transparent; font-size: 1rem; }
     .campsite-btn:hover { background: rgba(57, 255, 20, 0.2); }
+    
     .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
     .gallery a { display: block; }
     img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; border: 1px solid #2a2e35; cursor: pointer; }
+    
     @media (max-width: 600px) {
       h1 { font-size: 2.5rem !important; }
       .gallery { grid-template-columns: 1fr !important; }
@@ -34,6 +37,17 @@
       <span style="color: #fff;">📍 Location: Bathurst, NSW</span> 
     </p>
   </header>
+
+  <!-- Countdown Timer -->
+  <div class="countdown-container" style="background: #181b20; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 1px solid #2a2e35;">
+    <div style="color: #ffb703; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: bold;">Next Race Countdown</div>
+    <div id="timer" style="display: flex; justify-content: center; gap: 20px; font-size: 1.5rem; font-weight: 800; color: #fff;">
+      <div><span id="days">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">DAYS</div></div>
+      <div><span id="hours">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">HOURS</div></div>
+      <div><span id="minutes">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">MINS</div></div>
+      <div><span id="seconds">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">SECS</div></div>
+    </div>
+  </div>
 
   <button onclick="toggleGallery()" class="campsite-btn" style="margin-bottom: 30px;">View Photo Gallery</button>
 
@@ -54,7 +68,25 @@
         var x = document.getElementById("gallerySection");
         x.style.display = (x.style.display === "none") ? "grid" : "none";
     }
-    // Initialize Lightbox
+
+    function updateCountdown() {
+      const raceDate = new Date("2027-02-14T05:45:00+11:00").getTime();
+      const now = new Date().getTime();
+      const distance = raceDate - now;
+
+      if (distance < 0) {
+        document.querySelector(".countdown-container").innerHTML = "Race Underway!";
+        return;
+      }
+
+      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+      document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+    }
+    
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
     new LuminousGallery(document.querySelectorAll(".gallery a"));
   </script>
 </body>
