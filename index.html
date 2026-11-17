@@ -55,6 +55,22 @@
       line-height: 1.05;
       text-shadow: 0 0 22px rgba(255,183,3,0.15);
     }
+    .brand-logo {
+      display: block;
+      width: min(100%, 340px);
+      margin: 0 auto;
+      padding: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      line-height: 0;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+    }
+    .brand-logo img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
     .subtitle {
       color: var(--muted);
       margin-top: 14px;
@@ -258,7 +274,7 @@
 <body>
   <div class="page-shell">
     <header>
-      <h1>Bathurst 12 Hour 2027</h1>
+      <h1 class="brand-logo"><img src="B12HR_MAG_POS_LOCKUP_WIDE.webp" alt="Bathurst 12 Hour"></h1>
       <p class="subtitle" aria-label="Event information">
         <span style="color: #fff;">Event: Feb 11–14, 2027</span>
         <span aria-hidden="true">|</span>
