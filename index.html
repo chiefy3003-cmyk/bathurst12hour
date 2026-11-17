@@ -192,6 +192,13 @@
       margin-top: 2px;
       letter-spacing: 0.12em;
     }
+    .poll-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      max-width: 620px;
+      margin: 8px auto 20px;
+    }
     .poll-button {
       background: linear-gradient(135deg, var(--danger), #ff3d3d);
       color: white;
@@ -201,7 +208,8 @@
       font-weight: bold;
       border-radius: 12px;
       cursor: pointer;
-      margin: 8px 0 20px;
+      margin: 0;
+      width: 100%;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       box-shadow: 0 16px 30px rgba(225, 6, 0, 0.28);
     }
@@ -216,15 +224,18 @@
       inset: 0;
       background: rgba(0,0,0,0.82);
       padding: 20px;
+      overflow-y: auto;
     }
     .modal-backdrop.open {
       display: block;
     }
     .modal-card {
       background: linear-gradient(180deg, rgba(24,27,32,1), rgba(29,33,39,1));
-      margin: 15% auto;
+      margin: 4vh auto;
       padding: 22px;
-      width: min(80%, 420px);
+      width: min(100%, 460px);
+      max-height: 92vh;
+      overflow-y: auto;
       border-radius: 12px;
       border: 1px solid rgba(255,183,3,0.35);
       box-shadow: 0 22px 40px rgba(0,0,0,0.35);
@@ -239,7 +250,13 @@
       flex-direction: column;
       gap: 10px;
     }
-    .vote-group button {
+    .vote-option {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+    }
+    .vote-option button {
       padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid rgba(255,255,255,0.08);
@@ -247,10 +264,32 @@
       color: var(--text);
       cursor: pointer;
       transition: background 0.18s ease, border-color 0.18s ease;
+      text-align: left;
     }
-    .vote-group button:hover {
+    .vote-option button:hover:not(:disabled) {
       background: rgba(57,255,20,0.08);
       border-color: rgba(57,255,20,0.6);
+    }
+    .vote-option button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .vote-count {
+      min-width: 76px;
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .poll-status {
+      min-height: 1.4em;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .poll-status.error {
+      color: #ff8585;
     }
     @media (max-width: 600px) {
       .subtitle {
@@ -262,8 +301,12 @@
       body {
         padding-inline: 14px;
       }
+      .poll-buttons {
+        gap: 10px;
+      }
       .poll-button {
-        width: 100%;
+        padding: 20px 10px;
+        font-size: 1.25rem;
       }
     }
   </style>
@@ -291,19 +334,16 @@
       </div>
     </div>
 
-    <button type="button" class="poll-button" aria-label="Open poll" onclick="openPollModal();">POLL</button>
+    <div class="poll-buttons" aria-label="Community polls">
+      <button type="button" class="poll-button" onclick="openPollModal('firstFailure', this);">POLL #1</button>
+      <button type="button" class="poll-button" onclick="openPollModal('winningManufacturer', this);">POLL #2</button>
+    </div>
 
-    <div id="pollModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="pollTitle">
+    <div id="pollModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="pollTitle" aria-hidden="true">
       <div class="modal-card">
-        <h3 id="pollTitle">What day will Ross' fridge fail?</h3>
-        <div class="vote-group">
-          <button type="button" onclick="vote('Thursday')">Thursday</button>
-          <button type="button" onclick="vote('Friday')">Friday</button>
-          <button type="button" onclick="vote('Saturday')">Saturday</button>
-          <button type="button" onclick="vote('Sunday')">Sunday</button>
-          <button type="button" onclick="vote('Monday')">Monday</button>
-        </div>
-        <div id="resultsChart" style="margin-top:20px; text-align:left;" aria-live="polite"></div>
+        <h3 id="pollTitle"></h3>
+        <div id="pollOptions" class="vote-group"></div>
+        <p id="pollStatus" class="poll-status" aria-live="polite"></p>
         <button type="button" onclick="closePollModal();" style="margin-top:20px;">Close</button>
       </div>
     </div>
@@ -330,18 +370,180 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/lightgallery.min.js"></script>
   <script>
     const pollModal = document.getElementById('pollModal');
+    const pollTitle = document.getElementById('pollTitle');
+    const pollOptions = document.getElementById('pollOptions');
+    const pollStatus = document.getElementById('pollStatus');
     const gallerySection = document.getElementById('gallerySection');
     const galleryToggle = document.querySelector('.campsite-btn[aria-controls="gallerySection"]');
+    const supabaseUrl = 'https://pmnrycyixhbujlffdxpk.supabase.co';
+    const supabasePublicKey = 'sb_publishable_NpgAZaJME73H8iNv73E6qg_ne7vBxgd';
+    const pollDefinitions = {
+      firstFailure: {
+        id: 'first-failure',
+        title: 'What will fail first?',
+        options: ["Will's back", "Mick's knee", "Ross' fridge", 'Flag pole']
+      },
+      winningManufacturer: {
+        id: 'winning-manufacturer',
+        title: 'Winning Manufacturer',
+        options: ['Ford', 'Chev', 'Porsche', 'Mercedes', 'BMW', 'Audi', 'KTM', 'Ferrari', 'Lambo']
+      }
+    };
+    let activePollKey = null;
+    let activePollTrigger = null;
+    let voteCounts = {};
+    let voteCountsLoaded = false;
+    let voteSubmitting = false;
+    let pollRefreshTimer = null;
+    let supabaseClient = null;
 
-    function openPollModal() {
+    function isSupabaseConfigured() {
+      return supabaseUrl.startsWith('https://')
+        && !supabaseUrl.includes('YOUR_PROJECT_ID')
+        && supabasePublicKey.length > 0
+        && !supabasePublicKey.includes('YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY');
+    }
+
+    function getSupabaseClient() {
+      if (!isSupabaseConfigured() || !window.supabase?.createClient) return null;
+      supabaseClient ??= window.supabase.createClient(supabaseUrl, supabasePublicKey);
+      return supabaseClient;
+    }
+
+    function setPollStatus(message, isError = false) {
+      pollStatus.textContent = message;
+      pollStatus.classList.toggle('error', isError);
+    }
+
+    function renderPollOptions() {
+      const poll = pollDefinitions[activePollKey];
+      if (!poll) return;
+
+      pollOptions.replaceChildren();
+      for (const option of poll.options) {
+        const row = document.createElement('div');
+        row.className = 'vote-option';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = option;
+        button.disabled = !getSupabaseClient() || voteSubmitting;
+        button.addEventListener('click', () => submitPollVote(option));
+
+        const count = document.createElement('span');
+        count.className = 'vote-count';
+        const optionCount = voteCounts[poll.id]?.[option] ?? 0;
+        count.textContent = voteCountsLoaded
+          ? `${optionCount} ${optionCount === 1 ? 'vote' : 'votes'}`
+          : '— votes';
+
+        row.append(button, count);
+        pollOptions.append(row);
+      }
+    }
+
+    async function refreshPollCounts(afterVote = false) {
+      const client = getSupabaseClient();
+      if (!client) {
+        const message = isSupabaseConfigured()
+          ? 'Supabase client library did not load. Check your internet connection and reload.'
+          : 'Shared voting is not configured. Add your Supabase project URL and public key in this page.';
+        setPollStatus(message, true);
+        return false;
+      }
+
+      try {
+        const { data: rows, error } = await client
+          .from('poll_vote_counts')
+          .select('poll_id, option_text, vote_count');
+        if (error) throw new Error(error.message);
+        const nextCounts = {};
+        for (const row of rows) {
+          nextCounts[row.poll_id] ??= {};
+          nextCounts[row.poll_id][row.option_text] = Number(row.vote_count);
+        }
+        voteCounts = nextCounts;
+        voteCountsLoaded = true;
+        renderPollOptions();
+        setPollStatus(afterVote ? 'Your vote was counted. Totals are up to date.' : 'Shared totals loaded.');
+        return true;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        setPollStatus(
+          `${afterVote ? 'Vote recorded, but totals could not be refreshed' : 'Could not load shared vote totals'}: ${message}`,
+          true
+        );
+        return false;
+      }
+    }
+
+    async function openPollModal(pollKey, trigger) {
+      const poll = pollDefinitions[pollKey];
+      if (!poll) return;
+
+      if (pollRefreshTimer) clearInterval(pollRefreshTimer);
+      activePollKey = pollKey;
+      activePollTrigger = trigger;
+      pollTitle.textContent = poll.title;
       pollModal.classList.add('open');
+      pollModal.setAttribute('aria-hidden', 'false');
+      renderPollOptions();
+
+      if (!getSupabaseClient()) {
+        setPollStatus(
+          isSupabaseConfigured()
+            ? 'Supabase client library did not load. Check your internet connection and reload.'
+            : 'Shared voting is not configured. Add your Supabase project URL and public key in this page.',
+          true
+        );
+        return;
+      }
+
+      pollRefreshTimer = setInterval(() => {
+        if (pollModal.classList.contains('open') && !voteSubmitting) {
+          refreshPollCounts();
+        }
+      }, 15000);
+      setPollStatus('Loading shared vote totals…');
+      await refreshPollCounts();
     }
 
     function closePollModal() {
       pollModal.classList.remove('open');
+      pollModal.setAttribute('aria-hidden', 'true');
+      if (pollRefreshTimer) {
+        clearInterval(pollRefreshTimer);
+        pollRefreshTimer = null;
+      }
+      if (activePollTrigger) activePollTrigger.focus();
+    }
+
+    async function submitPollVote(option) {
+      const poll = pollDefinitions[activePollKey];
+      const client = getSupabaseClient();
+      if (!poll || !poll.options.includes(option) || !client || voteSubmitting) return;
+
+      voteSubmitting = true;
+      renderPollOptions();
+      setPollStatus('Submitting your vote…');
+      try {
+        const { error } = await client.from('poll_votes').insert({
+          poll_id: poll.id,
+          option_text: option
+        });
+        if (error) throw new Error(error.message);
+        await refreshPollCounts(true);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        setPollStatus(`Could not submit your vote: ${message}`, true);
+      } finally {
+        voteSubmitting = false;
+        renderPollOptions();
+      }
     }
 
     function toggleGallery() {
@@ -352,17 +554,6 @@
     }
 
     lightGallery(gallerySection, { selector: 'a' });
-
-    let votes = { Thursday: 0, Friday: 0, Saturday: 0, Sunday: 0, Monday: 0 };
-
-    function vote(day) {
-      votes[day] += 1;
-      let output = '<h5>Current Tally:</h5>';
-      for (const d in votes) {
-        output += `<p>${d}: ${votes[d]} votes</p>`;
-      }
-      document.getElementById('resultsChart').innerHTML = output;
-    }
 
     function selectYear(year, btn) {
       document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
