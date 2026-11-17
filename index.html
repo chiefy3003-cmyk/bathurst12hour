@@ -6,121 +6,392 @@
   <title>Bathurst 12 Hour Hub</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery-bundle.min.css">
   <style>
-    body { background: #0f1115; color: #f1f1f1; font-family: sans-serif; padding: 20px; text-align: center; }
-    header { background: #181b20; padding: 30px; border-radius: 8px; margin-bottom: 20px; border-bottom: 3px solid #ffb703; }
-    h1 { color: #ffb703; font-size: 5.25rem; text-transform: uppercase; margin: 0; letter-spacing: 2px; }
-    .subtitle { color: #9aa0a6; margin-top: 10px; font-size: 1.1rem; }
-    
-    .campsite-btn { color: #39ff14; border: 1px solid #39ff14; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin: 0 10px; display: inline-block; cursor: pointer; background: transparent; font-size: 1rem; }
-    .campsite-btn:hover { background: rgba(57, 255, 20, 0.2); }
-    
-    .year-nav { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-    .year-btn { background: #181b20; color: #f1f1f1; border: 1px solid #39ff14; padding: 10px 20px; cursor: pointer; border-radius: 5px; transition: 0.3s; }
-    .year-btn:hover { background: #39ff14; color: #0f1115; }
-    .year-btn.active { background: #39ff14; color: #0f1115; font-weight: bold; border-color: #39ff14; }
-
-    .data-card { background: #181b20; padding: 20px; border-radius: 8px; margin: 20px auto; border: 1px solid #2a2e35; max-width: 600px; }
-    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
-    .gallery a img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; border: 1px solid #2a2e35; cursor: pointer; }
-    
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #0f1115;
+      --panel: #181b20;
+      --panel-2: #1d2127;
+      --panel-3: #242a30;
+      --accent: #ffb703;
+      --accent-2: #39ff14;
+      --text: #f1f1f1;
+      --muted: #9aa0a6;
+      --danger: #e10600;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+    body {
+      background:
+        radial-gradient(circle at top, rgba(255,183,3,0.08), transparent 35%),
+        linear-gradient(180deg, #0b0d10 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      padding: 24px 20px 60px;
+      text-align: center;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .page-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    a { text-decoration: none; }
+    button {
+      font: inherit;
+    }
+    header {
+      background: linear-gradient(135deg, rgba(24,27,32,0.96), rgba(35,40,46,0.96));
+      padding: 36px 28px 28px;
+      border-radius: 14px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(255,183,3,0.25);
+      box-shadow: 0 18px 40px var(--shadow);
+    }
+    h1 {
+      color: var(--accent);
+      font-size: clamp(2.8rem, 7vw, 5.25rem);
+      text-transform: uppercase;
+      margin: 0;
+      letter-spacing: 3px;
+      line-height: 1.05;
+      text-shadow: 0 0 22px rgba(255,183,3,0.15);
+    }
+    .subtitle {
+      color: var(--muted);
+      margin-top: 14px;
+      font-size: 1.08rem;
+      line-height: 1.7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .campsite-btn {
+      color: var(--accent-2);
+      border: 1px solid var(--accent-2);
+      padding: 10px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 10px;
+      display: inline-block;
+      cursor: pointer;
+      background: rgba(57,255,20,0.04);
+      font-size: 1rem;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: inset 0 0 0 1px rgba(57,255,20,0.1);
+    }
+    .campsite-btn:hover {
+      background: rgba(57,255,20,0.12);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(57,255,20,0.12);
+    }
+    .year-nav {
+      margin: 22px 0 18px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .year-btn {
+      background: rgba(24,27,32,0.9);
+      color: var(--text);
+      border: 1px solid rgba(57,255,20,0.8);
+      padding: 10px 18px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+      font-weight: 600;
+    }
+    .year-btn:hover {
+      background: var(--accent-2);
+      color: var(--bg);
+      transform: translateY(-1px);
+    }
+    .year-btn.active {
+      background: linear-gradient(135deg, var(--accent-2), #8eff7d);
+      color: var(--bg);
+      font-weight: bold;
+      border-color: transparent;
+      box-shadow: 0 10px 20px rgba(57,255,20,0.18);
+    }
+    .data-card {
+      background: linear-gradient(180deg, rgba(24,27,32,0.96), rgba(29,33,39,0.96));
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px auto;
+      border: 1px solid rgba(255,255,255,0.07);
+      max-width: 700px;
+      box-shadow: 0 16px 30px rgba(0,0,0,0.18);
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 15px;
+      margin-top: 22px;
+    }
+    .gallery a img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      display: block;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+    }
+    .gallery a img:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 30px rgba(0,0,0,0.2);
+    }
+    .countdown-container {
+      background: linear-gradient(180deg, rgba(24,27,32,0.96), rgba(29,33,39,0.96));
+      padding: 24px 16px 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.07);
+      box-shadow: 0 18px 30px rgba(0,0,0,0.12);
+    }
+    .countdown-container .title {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      flex-wrap: wrap;
+    }
+    .countdown-cell {
+      min-width: 84px;
+    }
+    .countdown-cell .label {
+      font-size: 0.6rem;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: 0.12em;
+    }
+    .poll-button {
+      background: linear-gradient(135deg, var(--danger), #ff3d3d);
+      color: white;
+      border: none;
+      padding: 26px 60px;
+      font-size: clamp(1.5rem, 2.8vw, 2rem);
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      margin: 8px 0 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 16px 30px rgba(225, 6, 0, 0.28);
+    }
+    .poll-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 34px rgba(225, 6, 0, 0.32);
+    }
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      padding: 20px;
+    }
+    .modal-backdrop.open {
+      display: block;
+    }
+    .modal-card {
+      background: linear-gradient(180deg, rgba(24,27,32,1), rgba(29,33,39,1));
+      margin: 15% auto;
+      padding: 22px;
+      width: min(80%, 420px);
+      border-radius: 12px;
+      border: 1px solid rgba(255,183,3,0.35);
+      box-shadow: 0 22px 40px rgba(0,0,0,0.35);
+    }
+    .modal-card h3 {
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+    .vote-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .vote-group button {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(15,17,21,0.9);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+    .vote-group button:hover {
+      background: rgba(57,255,20,0.08);
+      border-color: rgba(57,255,20,0.6);
+    }
     @media (max-width: 600px) {
-      h1 { font-size: 2.5rem !important; }
-      .gallery { grid-template-columns: 1fr !important; }
+      .subtitle {
+        flex-direction: column;
+      }
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+      body {
+        padding-inline: 14px;
+      }
+      .poll-button {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="page-shell">
+    <header>
+      <h1>Bathurst 12 Hour 2027</h1>
+      <p class="subtitle" aria-label="Event information">
+        <span style="color: #fff;">Event: Feb 11–14, 2027</span>
+        <span aria-hidden="true">|</span>
+        <a href="PADDOCK.pdf" target="_blank" rel="noopener noreferrer" class="campsite-btn" style="padding:5px 15px;">Paddock Campsites: 0798 &amp; 0799</a>
+        <span aria-hidden="true">|</span>
+        <span style="color: #fff;">📍 Location: Bathurst, NSW</span>
+      </p>
+    </header>
 
-  <header>
-    <h1>Bathurst 12 Hour 2027</h1>
-    <p class="subtitle">
-      <span style="color: #fff;">Event: Feb 11–14, 2027</span> 
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
-      <a href="PADDOCK.pdf" target="_blank" class="campsite-btn" style="padding:5px 15px;">Paddock Campsites: 0798 & 0799</a> 
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
-      <span style="color: #fff;">📍 Location: Bathurst, NSW</span> 
-    </p>
-  </header>
-
-  <div class="countdown-container" style="background: #181b20; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 1px solid #2a2e35;">
-    <div style="color: #ffb703; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: bold;">Next Race Countdown</div>
-    <div id="timer" style="display: flex; justify-content: center; gap: 20px; font-size: 1.5rem; font-weight: 800; color: #fff;">
-      <div><span id="days">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">DAYS</div></div>
-      <div><span id="hours">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">HOURS</div></div>
-      <div><span id="minutes">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">MINS</div></div>
-      <div><span id="seconds">00</span><div style="font-size: 0.6rem; color: #9aa0a6;">SECS</div></div>
-    </div>
-  </div>
-
-    <!-- Poll Button -->
-  <button onclick="document.getElementById('pollModal').style.display='block'" style="background: #e10600; color: white; border: none; padding: 30px 60px; font-size: 2rem; font-weight: bold; border-radius: 10px; cursor: pointer; margin-bottom: 20px;">POLL</button>
-
-  <!-- Popup Modal -->
-  <div id="pollModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8);">
-    <div style="background:#181b20; margin:15% auto; padding:20px; width:80%; max-width:400px; border-radius:8px; border:1px solid #ffb703;">
-      <h3 style="color:#ffb703;">What day will Ross' fridge fail?</h3>
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <button onclick="vote('Thursday')">Thursday</button>
-        <button onclick="vote('Friday')">Friday</button>
-        <button onclick="vote('Saturday')">Saturday</button>
-        <button onclick="vote('Sunday')">Sunday</button>
-        <button onclick="vote('Monday')">Monday</button>
+    <div class="countdown-container">
+      <div class="title">Next Race Countdown</div>
+      <div id="timer" class="countdown-grid">
+        <div class="countdown-cell"><span id="days">00</span><div class="label">DAYS</div></div>
+        <div class="countdown-cell"><span id="hours">00</span><div class="label">HOURS</div></div>
+        <div class="countdown-cell"><span id="minutes">00</span><div class="label">MINS</div></div>
+        <div class="countdown-cell"><span id="seconds">00</span><div class="label">SECS</div></div>
       </div>
-      <div id="resultsChart" style="margin-top:20px; text-align:left;"></div>
-      <button onclick="document.getElementById('pollModal').style.display='none'" style="margin-top:20px;">Close</button>
     </div>
-  </div>
 
-  <div class="year-nav">
-    <button class="year-btn" onclick="selectYear('2026', this)">2026</button>
-    <button class="year-btn" onclick="selectYear('2025', this)">2025</button>
-    <button class="year-btn" onclick="selectYear('2024', this)">2024</button>
-    <button class="year-btn" onclick="selectYear('2023', this)">2023</button>
-    <button class="year-btn" onclick="selectYear('2022', this)">2022</button>
-  </div>
-  <div id="resultsDisplay" class="data-card">Select a year to see results.</div>
+    <button type="button" class="poll-button" aria-label="Open poll" onclick="openPollModal();">POLL</button>
 
-  <button onclick="toggleGallery()" class="campsite-btn" style="margin-top: 30px;">View Photo Gallery</button>
+    <div id="pollModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="pollTitle">
+      <div class="modal-card">
+        <h3 id="pollTitle">What day will Ross' fridge fail?</h3>
+        <div class="vote-group">
+          <button type="button" onclick="vote('Thursday')">Thursday</button>
+          <button type="button" onclick="vote('Friday')">Friday</button>
+          <button type="button" onclick="vote('Saturday')">Saturday</button>
+          <button type="button" onclick="vote('Sunday')">Sunday</button>
+          <button type="button" onclick="vote('Monday')">Monday</button>
+        </div>
+        <div id="resultsChart" style="margin-top:20px; text-align:left;" aria-live="polite"></div>
+        <button type="button" onclick="closePollModal();" style="margin-top:20px;">Close</button>
+      </div>
+    </div>
 
-  <div id="gallerySection" class="gallery" style="display: none;">
-    <a href="IMG-20260213-WA0001(1).jpg"><img src="IMG-20260213-WA0001(1).jpg" alt="Photo 1"></a>
-    <a href="IMG-20240601-WA0004.jpg"><img src="IMG-20240601-WA0004.jpg" alt="Photo 2"></a>
-    <a href="IMG-20260215-WA0007.jpg"><img src="IMG-20260215-WA0007.jpg" alt="Photo 3"></a>
-    <a href="IMG-20260214-WA0005.jpg"><img src="IMG-20260214-WA0005.jpg" alt="Photo 4"></a>
-    <a href="timthumb.jpg"><img src="timthumb.jpg" alt="Photo 5"></a>
-    <a href="timthumb (3).jpg"><img src="timthumb (3).jpg" alt="Photo 6"></a>
-    <a href="timthumb (2).jpg"><img src="timthumb (2).jpg" alt="Photo 7"></a>
+    <div class="year-nav" aria-label="Select a year">
+      <button type="button" class="year-btn active" onclick="selectYear('2026', this)">2026</button>
+      <button type="button" class="year-btn" onclick="selectYear('2025', this)">2025</button>
+      <button type="button" class="year-btn" onclick="selectYear('2024', this)">2024</button>
+      <button type="button" class="year-btn" onclick="selectYear('2023', this)">2023</button>
+      <button type="button" class="year-btn" onclick="selectYear('2022', this)">2022</button>
+    </div>
+    <div id="resultsDisplay" class="data-card" aria-live="polite"><h3>2026 Results</h3><p>Winner: #888 Mercedes-AMG (Engel/Grenier/Martin)</p><p>Pole: 1:25.800</p><p>Fastest Lap: 2:02.100</p></div>
+
+    <button type="button" onclick="toggleGallery()" class="campsite-btn" aria-expanded="false" aria-controls="gallerySection" style="margin-top: 30px;">View Photo Gallery</button>
+
+    <div id="gallerySection" class="gallery" style="display: none;">
+      <a href="IMG-20260213-WA0001(1).jpg"><img src="IMG-20260213-WA0001(1).jpg" alt="Photo 1"></a>
+      <a href="IMG-20240601-WA0004.jpg"><img src="IMG-20240601-WA0004.jpg" alt="Photo 2"></a>
+      <a href="IMG-20260215-WA0007.jpg"><img src="IMG-20260215-WA0007.jpg" alt="Photo 3"></a>
+      <a href="IMG-20260214-WA0005.jpg"><img src="IMG-20260214-WA0005.jpg" alt="Photo 4"></a>
+      <a href="timthumb.jpg"><img src="timthumb.jpg" alt="Photo 5"></a>
+      <a href="timthumb (3).jpg"><img src="timthumb (3).jpg" alt="Photo 6"></a>
+      <a href="timthumb (2).jpg"><img src="timthumb (2).jpg" alt="Photo 7"></a>
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/lightgallery.min.js"></script>
   <script>
-    lightGallery(document.getElementById('gallerySection'), { selector: 'a' });
-    function toggleGallery() { var x = document.getElementById("gallerySection"); x.style.display = (x.style.display === "none") ? "grid" : "none"; }
+    const pollModal = document.getElementById('pollModal');
+    const gallerySection = document.getElementById('gallerySection');
+    const galleryToggle = document.querySelector('.campsite-btn[aria-controls="gallerySection"]');
+
+    function openPollModal() {
+      pollModal.classList.add('open');
+    }
+
+    function closePollModal() {
+      pollModal.classList.remove('open');
+    }
+
+    function toggleGallery() {
+      const isHidden = gallerySection.style.display === 'none';
+      gallerySection.style.display = isHidden ? 'grid' : 'none';
+      galleryToggle.setAttribute('aria-expanded', String(isHidden));
+      galleryToggle.textContent = isHidden ? 'Hide Photo Gallery' : 'View Photo Gallery';
+    }
+
+    lightGallery(gallerySection, { selector: 'a' });
+
     let votes = { Thursday: 0, Friday: 0, Saturday: 0, Sunday: 0, Monday: 0 };
-    function vote(day) { votes[day]++; let output = "<h5>Current Tally:</h5>"; for(let d in votes) output += `<p>${d}: ${votes[d]} votes</p>`; document.getElementById('resultsChart').innerHTML = output; }
+
+    function vote(day) {
+      votes[day] += 1;
+      let output = '<h5>Current Tally:</h5>';
+      for (const d in votes) {
+        output += `<p>${d}: ${votes[d]} votes</p>`;
+      }
+      document.getElementById('resultsChart').innerHTML = output;
+    }
+
     function selectYear(year, btn) {
       document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const raceData = {
-        "2026": { results: "Winner: #888 Mercedes-AMG (Engel/Grenier/Martin)", pole: "1:25.800", fastLap: "2:02.100" },
-        "2025": { results: "Winner: #32 Team WRT BMW (K.vdLinde/S.vdLinde/Farfus)", pole: "1:26.100", fastLap: "2:02.500" },
-        "2024": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Stolz/Habul)", pole: "1:26.272", fastLap: "2:02.189" },
-        "2023": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Stolz/Habul)", pole: "1:25.692", fastLap: "2:01.981" },
-        "2022": { results: "Winner: #75 SunEnergy1 Mercedes (Gounon/Habul/Stolz/Martin)", pole: "2:02.978", fastLap: "2:03.312" }
+        '2026': { results: 'Winner: #888 Mercedes-AMG (Engel/Grenier/Martin)', pole: '1:25.800', fastLap: '2:02.100' },
+        '2025': { results: 'Winner: #32 Team WRT BMW (K.vdLinde/S.vdLinde/Farfus)', pole: '1:26.100', fastLap: '2:02.500' },
+        '2024': { results: 'Winner: #75 SunEnergy1 Mercedes (Gounon/Stolz/Habul)', pole: '1:26.272', fastLap: '2:02.189' },
+        '2023': { results: 'Winner: #75 SunEnergy1 Mercedes (Gounon/Stolz/Habul)', pole: '1:25.692', fastLap: '2:01.981' },
+        '2022': { results: 'Winner: #75 SunEnergy1 Mercedes (Gounon/Habul/Stolz/Martin)', pole: '2:02.978', fastLap: '2:03.312' }
       };
       const data = raceData[year];
       document.getElementById('resultsDisplay').innerHTML = `<h3>${year} Results</h3><p>${data.results}</p><p>Pole: ${data.pole}</p><p>Fastest Lap: ${data.fastLap}</p>`;
     }
+
     function updateCountdown() {
-      const raceDate = new Date("2027-02-14T05:45:00+11:00").getTime();
+      const raceDate = new Date('2027-02-14T05:45:00+11:00').getTime();
       const now = new Date().getTime();
       const distance = raceDate - now;
-      if (distance < 0) { document.querySelector(".countdown-container").innerHTML = "Race Underway!"; return; }
-      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-      document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+      if (distance < 0) {
+        document.querySelector('.countdown-container').innerHTML = 'Race Underway!';
+        return;
+      }
+      document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+      document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+      document.getElementById('minutes').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+      document.getElementById('seconds').innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
     }
+
+    document.getElementById('pollModal').addEventListener('click', function(event) {
+      if (event.target === pollModal) {
+        closePollModal();
+      }
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closePollModal();
+      }
+    });
+
+    selectYear('2026', document.querySelector('.year-btn.active'));
     setInterval(updateCountdown, 1000);
     updateCountdown();
   </script>
